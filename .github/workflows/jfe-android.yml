@@ -1,0 +1,31 @@
+name: JFE Engine Android APK
+
+on:
+  push:
+    branches:
+      - develop
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  build-android:
+    runs-on: ubuntu-24.04
+
+    steps:
+      - name: Checkout source
+        uses: actions/checkout@v4
+
+      - name: Build Android APK
+        run: |
+          chmod +x build/build_android.sh
+          ./build/build_android.sh
+
+      - name: Upload APK
+        uses: actions/upload-artifact@v4
+        with:
+          name: JFE-Engine-Android-APK
+          path: bin/ikemen-go.apk
+          if-no-files-found: error
+          retention-days: 7
